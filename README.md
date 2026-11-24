@@ -4,7 +4,15 @@ Aplicación de **lista compartida en tiempo real** para elegir un regalo grupal,
 
 ---
 
-## 🚀 Cómo instalar y ejecutar el proyecto
+## 🌐 Demo desplegada en vivo (Render)
+
+- **👤 Vista Participante (WebSocket):** [https://tp4web.onrender.com/](https://tp4web.onrender.com/)
+- **📺 Vista Pantalla Compartida (SSE):** [https://tp4web.onrender.com/pantalla](https://tp4web.onrender.com/pantalla)
+- **🖥️ Vista Demo 4 Paneles Simultáneos:** [https://tp4web.onrender.com/demo](https://tp4web.onrender.com/demo)
+
+---
+
+## 🚀 Cómo instalar y ejecutar el proyecto localmente
 
 ### Requisitos previos
 - **Node.js** v20 LTS o superior (probado en Node.js v24).
@@ -57,9 +65,6 @@ npm test
 ## 📸 Evidencia (GIF y Capturas de Funcionamiento)
 
 Toda la evidencia visual solicitada se encuentra en la carpeta [`evidencia/`](evidencia/):
-
-### 1. Video / GIF con 3 participantes (WebSocket) y la pantalla (SSE) sincronizados
-![Demo sincronizada de 3 participantes y pantalla](evidencia/demo_sincronizada.gif)
 
 ### 2. Comportamiento con el catálogo lento
 Mientras el Participante 1 (`Lucía`) espera la respuesta demorada de DummyJSON (`?delay=2000`), ve el aviso de consulta en curso y los demás participantes siguen conectados y votando sin bloqueos:
