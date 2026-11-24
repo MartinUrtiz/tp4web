@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: tp4-regalo-grupal
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm run start:prod
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: CATALOG_BASE_URL
+        value: https://dummyjson.com/products
+      - key: CATALOG_TIMEOUT_MS
+        value: "4000"
+      - key: CATALOG_DELAY_MS
+        value: "0"
