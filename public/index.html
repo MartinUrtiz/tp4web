@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Participante · Lista de Regalo Grupal (TP4)</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="top-bar">
+      <div class="brand">
+        <h1>🎁 Regalo Grupal · Vista Participante</h1>
+        <p>Conectado por WebSocket estándar en tiempo real · Catálogo DummyJSON</p>
+      </div>
+      <div class="header-actions">
+        <span id="conn-badge" class="badge offline">Desconectado</span>
+        <span id="user-badge" class="badge hidden"></span>
+        <a href="/pantalla" target="_blank" class="btn-link secondary">📺 Abrir Pantalla (SSE)</a>
+      </div>
+    </header>
+
+    <!-- Sección de Ingreso (JOIN) -->
+    <section id="join-section" class="card">
+      <h2>1. Ingresar a la lista compartida</h2>
+      <form id="join-form" class="form-row">
+        <input
+          type="text"
+          id="participant-name"
+          placeholder="Tu nombre (ej: Lucía, Martín...)"
+          maxlength="25"
+          required
+          autocomplete="off"
+        />
+        <input
+          type="text"
+          id="room-code"
+          placeholder="Sala (opcional, por defecto: general)"
+          maxlength="20"
+          style="max-width: 240px;"
+        />
+        <button type="submit" id="join-btn">Entrar a la lista</button>
+      </form>
+      <p class="help-text">
+        Reglas de nombre: entre 2 y 25 caracteres, sin vacíos ni nombres duplicados conectados al mismo tiempo.
+      </p>
+      <div id="join-error" class="alert-box error hidden"></div>
+    </section>
+
+    <!-- Contenido principal una vez dentro -->
+    <main id="app-section" class="hidden">
+      <!-- Banner de errores generales o mensajes inválidos -->
+      <div id="server-error-banner" class="alert-box error hidden" style="margin-bottom: 18px;"></div>
+
+      <div class="grid-layout">
+        <!-- Columna izquierda: Participantes conectados y consola de pruebas -->
+        <aside>
+          <section class="card">
+            <h2>👥 Conectados (<span id="participants-count">0</span>)</h2>
+            <ul id="participants-list" class="participants-list"></ul>
+            <p class="help-text" style="margin-top: 12px;">
+              Sala activa: <strong id="active-room-label">general</strong>
+            </p>
+            <button id="change-user-btn" class="secondary" style="width: 100%; margin-top: 12px;">
+              Cambiar de nombre / Salir
+            </button>
+          </section>
+
+          <section class="card">
+            <h2>🧪 Pruebas rápidas del contrato</h2>
+            <p class="help-text" style="margin-bottom: 10px;">
+              Enviá un mensaje inválido por WebSocket para comprobar que el servidor devuelve error solo a vos y sigue funcionando:
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <button type="button" id="test-invalid-json-btn" class="secondary">
+                Enviar JSON malformado
+              </button>
+              <button type="button" id="test-unknown-type-btn" class="secondary">
+                Enviar tipo desconocido
+              </button>
+              <button type="button" id="test-out-of-range-btn" class="secondary">
+                Enviar 12 IDs (&gt;10 máx)
+              </button>
+            </div>
+          </section>
+        </aside>
+
+        <!-- Columna derecha: Proponer productos y Ranking para votar -->
+        <div>
+          <section class="card">
+            <h2>2. Proponer productos del catálogo (DummyJSON)</h2>
+            <form id="propose-form" class="form-row">
+              <input
+                type="text"
+                id="product-ids-input"
+                placeholder="IDs separados por coma o espacio (ej: 1, 2, 5, 9999)"
+                autocomplete="off"
+              />
+              <button type="submit" id="propose-btn">Proponer productos</button>
+            </form>
+            <p class="help-text">
+              Podés proponer de <strong>1 a 10 productos en una sola acción</strong>. El servidor los consulta en simultáneo al catálogo.
+            </p>
+            <div class="quick-presets">
+              <button type="button" class="secondary preset-btn" data-ids="1, 2, 3">
+                ⚡ Ejemplo válido (1, 2, 3)
+              </button>
+              <button type="button" class="secondary preset-btn" data-ids="4, 99999, 5">
+                ⚠️ Fallo parcial (4, 99999 inexistente, 5)
+              </button>
+              <button type="button" class="secondary preset-btn" data-ids="6, 7, 8, 9">
+                🎁 Lote de 4 productos (6, 7, 8, 9)
+              </button>
+            </div>
+
+            <!-- Estado de espera al catálogo y resultado de la propuesta (solo visible para quien propuso) -->
+            <div id="proposal-loading" class="alert-box info hidden">
+              ⏳ Consultando el catálogo externo en simultáneo... Mientras tanto, todos pueden seguir votando sin bloqueos.
+            </div>
+            <div id="proposal-feedback" class="hidden"></div>
+          </section>
+
+          <section class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+              <h2 style="margin-bottom: 0;">3. Lista de regalos propuestos (<span id="products-count">0</span>)</h2>
+              <span class="help-text" style="margin-top: 0;">Ordenada en vivo por cantidad de votos</span>
+            </div>
+            <p id="policy-hint" class="help-text" style="margin-bottom: 14px;"></p>
+
+            <div id="products-container" class="products-list"></div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/participante.js"></script>
+</body>
+</html>

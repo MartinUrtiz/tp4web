@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pantalla En Vivo · Ranking de Regalo Grupal (TP4)</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="top-bar">
+      <div class="brand">
+        <h1>📺 Pantalla Compartida · Ranking en Vivo</h1>
+        <p>Modo solo lectura mediante Server-Sent Events (<code>EventSource</code>) · Se actualiza sola sin recargar</p>
+      </div>
+      <div class="header-actions">
+        <span id="sse-badge" class="badge offline">Conectando SSE...</span>
+        <span class="badge">👥 Conectados: <strong id="screen-participants-count">0</strong></span>
+        <span class="badge">Sala: <strong id="screen-room-code">general</strong></span>
+      </div>
+    </header>
+
+    <div class="grid-layout">
+      <aside>
+        <section class="card">
+          <h2>👥 Participantes activos (<span id="sidebar-participants-count">0</span>)</h2>
+          <ul id="screen-participants-list" class="participants-list"></ul>
+        </section>
+
+        <section class="card">
+          <h2>📡 Última novedad</h2>
+          <p id="last-event-text" class="help-text">Esperando eventos del servidor...</p>
+          <p id="last-updated-time" class="help-text"></p>
+        </section>
+      </aside>
+
+      <main>
+        <section class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h2 style="margin-bottom: 0; font-size: 1.3rem;">🏆 Ranking de Productos Propuestos</h2>
+            <span class="badge">Total productos: <strong id="screen-products-count">0</strong></span>
+          </div>
+
+          <div id="screen-products-container" class="products-list"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="/pantalla.js"></script>
+</body>
+</html>
